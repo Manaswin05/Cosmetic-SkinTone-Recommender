@@ -71,8 +71,8 @@ If you want to track analysis requests:
 2. Set the `MONGO_URI` environment variable:
    ```bash
    export MONGO_URI="mongodb://localhost:27017"
-   # or for Atlas:
-   export MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/lumina_beauty (currently doesn't exist)"
+   # or for Atlas (currently doesn't exist):
+   export MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/lumina_beauty"
    ```
 
 ## 🌐 Deployment
