@@ -72,7 +72,7 @@ If you want to track analysis requests:
    ```bash
    export MONGO_URI="mongodb://localhost:27017"
    # or for Atlas:
-   export MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/lumina_beauty"
+   export MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/lumina_beauty (currently doesn't exist)"
    ```
 
 ## 🌐 Deployment
