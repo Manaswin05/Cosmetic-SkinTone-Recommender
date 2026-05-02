@@ -43,13 +43,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-4 md:gap-6 text-primary">
-            <button className="hover:opacity-70 transition-opacity hidden sm:block">
+            <button className="hover:opacity-70 transition-opacity hidden md:block">
               <Heart size={20} />
             </button>
-            <button className="hover:opacity-70 transition-opacity hidden sm:block">
+            <button className="hover:opacity-70 transition-opacity hidden md:block">
               <User size={20} />
             </button>
-            <button className="hover:opacity-70 transition-opacity">
+            <button className="hover:opacity-70 transition-opacity hidden md:block">
               <ShoppingBag size={20} />
             </button>
             {/* Hamburger — mobile only */}
@@ -58,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Toggle menu"
             >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -96,6 +96,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="flex gap-6 px-4 pt-4 pb-2 border-t border-outline/30 mt-2">
                   <button className="hover:opacity-70 transition-opacity text-primary"><Heart size={20} /></button>
                   <button className="hover:opacity-70 transition-opacity text-primary"><User size={20} /></button>
+                  <button className="hover:opacity-70 transition-opacity text-primary"><ShoppingBag size={20} /></button>
                 </div>
               </nav>
             </motion.div>
