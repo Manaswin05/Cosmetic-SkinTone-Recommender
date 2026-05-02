@@ -237,7 +237,303 @@ export default function SkinAnalysis() {
   const resetAnalysis = () => { setCapturedImage(null); setResult(null); setError(null); };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="max-w-[1280px] mx-auto px-6 md:px-12 py-20">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="max-w-[1280px] mx-auto px-4 md:px-12 py-10 md:py-20">
+      {/* Hero Header */}
+      <div className="text-center mb-10 md:mb-16 px-2">
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-sans font-bold text-[10px] text-primary uppercase mb-3 tracking-[0.4em]">
+          {result ? "Results Found" : "OpenCV Precision"}
+        </motion.p>
+        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-serif italic text-4xl sm:text-5xl md:text-7xl text-on-surface mb-4 md:mb-8 tracking-tighter">
+          {result ? "Your Origin Profile" : "Skin Tone Detection."}
+        </motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="font-serif italic text-base md:text-xl text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          {result
+            ? "Your unique biological signature, mapped through precise computer vision analysis."
+            : "Advanced OpenCV skin detection — identifying your perfect cosmetic shade match."}
+        </motion.p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-start">
+        {/* Interaction Area */}
+        <div className="lg:col-span-8 space-y-6 md:space-y-12">
+          <div className="relative aspect-[4/3] sm:aspect-[16/10] bg-surface rounded-[32px] md:rounded-[60px] overflow-hidden shadow-2xl border border-outline/50 group">
+            <AnimatePresence mode="sync">
+              {/* Initial State */}
+              {!stream && !capturedImage && !result && (
+                <motion.div key="initial" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 m-4 md:m-8 border-2 border-dashed border-outline rounded-[24px] md:rounded-[40px]">
+                  <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 4 }}
+                    className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-surface-container flex items-center justify-center mb-6 md:mb-10 text-primary shadow-xl border border-white">
+                    <UserCircle2 size={40} strokeWidth={0.5} className="md:hidden" />
+                    <UserCircle2 size={56} strokeWidth={0.5} className="hidden md:block" />
+                  </motion.div>
+                  <div className="text-center max-w-md">
+                    <h3 className="font-serif italic text-2xl md:text-3xl text-on-surface mb-3 tracking-tighter">Enter Protocol</h3>
+                    <p className="font-serif italic text-on-surface-variant mb-6 md:mb-12 leading-relaxed text-[14px] md:text-[16px]">
+                      Ensure soft, directional lighting. Position your face clearly within the digital sight for maximum fidelity.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 md:gap-6 justify-center">
+                      <button onClick={startCamera} className="bg-primary text-on-primary px-8 py-4 rounded-2xl font-sans font-bold text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:opacity-90 transition-all shadow-lg">
+                        <Camera size={15} /> Live Frame
+                      </button>
+                      <button onClick={() => fileInputRef.current?.click()} className="bg-white border border-outline text-on-surface px-8 py-4 rounded-2xl font-sans font-bold text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-surface transition-all">
+                        <Upload size={15} /> Import Data
+                      </button>
+                      <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" accept="image/*" />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Camera Stream */}
+              {stream && (
+                <motion.div key="camera" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-[#000]">
+                  <video
+                    ref={videoCallbackRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    style={{ backgroundColor: '#1a1a1a' }}
+                    className="w-full h-full object-cover"
+                  />
+                  {!cameraReady && (
+                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
+                      <div className="text-center">
+                        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="mb-4 text-white opacity-60 mx-auto w-fit">
+                          <Loader2 size={40} strokeWidth={1} />
+                        </motion.div>
+                        <p className="font-serif italic text-white text-base">Initializing camera...</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 border-[40px] md:border-[60px] border-[#000]/60 flex items-center justify-center pointer-events-none">
+                    <div className="w-40 h-52 md:w-64 md:h-80 border border-white/30 rounded-[4rem] md:rounded-[6rem] border-dashed" />
+                  </div>
+                  <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center gap-3 md:gap-6">
+                    <button onClick={capturePhoto} disabled={!cameraReady} className="bg-white text-primary px-6 md:px-12 py-4 md:py-5 rounded-2xl font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.2em] md:tracking-[0.3em] shadow-2xl hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
+                      Capture
+                    </button>
+                    <button onClick={stopCamera} className="bg-primary text-white px-6 md:px-12 py-4 md:py-5 rounded-2xl font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.2em] md:tracking-[0.3em]">
+                      Exit
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Preview */}
+              {capturedImage && !result && (
+                <motion.div key="preview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 flex flex-col">
+                  <img src={capturedImage} className="w-full h-full object-cover" alt="Captured" />
+                  {isAnalyzing && (
+                    <div className="absolute inset-0 bg-surface/80 backdrop-blur-md flex flex-col items-center justify-center">
+                      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="mb-6 text-primary opacity-40">
+                        <Loader2 size={48} strokeWidth={1} />
+                      </motion.div>
+                      <p className="font-serif italic text-2xl md:text-3xl text-on-surface tracking-tighter">Detecting Skin Tone...</p>
+                      <p className="font-serif italic text-sm text-on-surface-variant mt-3">OpenCV analyzing facial skin regions</p>
+                    </div>
+                  )}
+                  {!isAnalyzing && (
+                    <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center gap-3 md:gap-6">
+                      <button onClick={runAnalysis} className="bg-primary text-on-primary px-8 md:px-12 py-4 md:py-5 rounded-2xl font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.2em] shadow-2xl">
+                        Detect Skin Tone
+                      </button>
+                      <button onClick={() => setCapturedImage(null)} className="bg-white text-on-surface border border-outline px-8 md:px-12 py-4 md:py-5 rounded-2xl font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.2em]">
+                        Retake
+                      </button>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* Results */}
+              {result && (
+                <motion.div key="results" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
+                  className="absolute inset-0 bg-surface-bright p-5 md:p-14 overflow-y-auto hide-scrollbar">
+                  <div className="max-w-2xl mx-auto space-y-8 md:space-y-12">
+                    {/* Header */}
+                    <div className="flex items-end justify-between border-b border-outline pb-6 md:pb-10">
+                      <div>
+                        <p className="font-sans font-bold text-[10px] text-primary uppercase tracking-[0.4em] mb-2 md:mb-4 text-left">OpenCV Detection</p>
+                        <h2 className="font-serif italic text-3xl md:text-5xl text-on-surface tracking-tighter text-left leading-none uppercase">Results.</h2>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-sans font-bold text-[9px] md:text-[10px] text-on-surface-variant uppercase tracking-[0.3em] mb-1 md:mb-2">Shade Code</p>
+                        <span className="font-serif italic text-3xl md:text-5xl text-primary">{result.shadeMatch.code}</span>
+                      </div>
+                    </div>
+
+                    {/* Detected Color */}
+                    <div className="flex items-center gap-4 md:gap-8 bg-surface p-5 md:p-8 rounded-[24px] md:rounded-[32px] border border-outline/50 shadow-sm">
+                      <div className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-xl border-4 border-white flex-shrink-0" style={{ backgroundColor: result.detectedColor.hex }} />
+                      <div className="flex-1 text-left min-w-0">
+                        <p className="font-sans font-bold text-[9px] md:text-[10px] text-on-surface-variant/60 uppercase tracking-[0.3em] mb-1 md:mb-2">Detected Skin Tone</p>
+                        <p className="font-serif italic text-lg md:text-2xl text-on-surface uppercase tracking-tight truncate">{result.shadeMatch.name}</p>
+                        <p className="font-sans text-[11px] md:text-[12px] text-on-surface-variant mt-1 truncate">{result.detectedColor.hex} · {result.shadeMatch.description}</p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="font-sans font-bold text-[9px] md:text-[10px] text-on-surface-variant/60 uppercase tracking-[0.3em] mb-1">Confidence</p>
+                        <p className="font-serif italic text-2xl md:text-3xl text-primary">{result.confidence}%</p>
+                      </div>
+                    </div>
+
+                    {/* Skin Type & Undertone */}
+                    <div className="grid grid-cols-2 gap-4 md:gap-8">
+                      <div className="bg-surface p-5 md:p-8 rounded-[24px] md:rounded-[32px] border border-outline/50 shadow-sm">
+                        <p className="font-sans font-bold text-[9px] md:text-[10px] text-on-surface-variant/60 uppercase tracking-[0.3em] mb-2 md:mb-4">Skin Category</p>
+                        <p className="font-serif italic text-lg md:text-2xl text-on-surface uppercase tracking-tight">{result.shadeMatch.category}</p>
+                      </div>
+                      <div className="bg-surface p-5 md:p-8 rounded-[24px] md:rounded-[32px] border border-outline/50 shadow-sm">
+                        <p className="font-sans font-bold text-[9px] md:text-[10px] text-on-surface-variant/60 uppercase tracking-[0.3em] mb-2 md:mb-4">Color Harmony</p>
+                        <p className="font-serif italic text-lg md:text-2xl text-on-surface uppercase tracking-tight">{result.undertone}</p>
+                      </div>
+                    </div>
+
+                    {/* Shade Strip */}
+                    <div className="space-y-3 md:space-y-4">
+                      <p className="font-sans font-bold text-[10px] text-on-surface-variant uppercase tracking-[0.4em] text-left">Shade Spectrum</p>
+                      <div className="flex gap-1 md:gap-1.5 items-end">
+                        {result.allShades.map((shade) => {
+                          const isMatch = shade.code === result.shadeMatch.code;
+                          const isNearby = result.nearbyShades.some(n => n.code === shade.code);
+                          return (
+                            <div key={shade.code} className="flex flex-col items-center gap-1 flex-1">
+                              {isMatch && (
+                                <motion.div initial={{ y: 5, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+                                  className="font-sans font-bold text-[7px] md:text-[8px] text-primary uppercase tracking-wider whitespace-nowrap">
+                                  You
+                                </motion.div>
+                              )}
+                              <div
+                                className={`w-full rounded-md md:rounded-lg transition-all ${isMatch ? "h-10 md:h-14 ring-2 ring-primary ring-offset-1 shadow-lg" : isNearby ? "h-7 md:h-10 opacity-80" : "h-5 md:h-8 opacity-40"}`}
+                                style={{ backgroundColor: shade.hex }}
+                                title={`${shade.name} (${shade.code})`}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Nearby Shades */}
+                    <div className="space-y-3 md:space-y-4">
+                      <p className="font-sans font-bold text-[10px] text-on-surface-variant uppercase tracking-[0.4em] text-left">Closest Matches</p>
+                      <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+                        {result.nearbyShades.map((shade, i) => (
+                          <div key={shade.code} className={`flex-1 flex items-center gap-3 md:gap-4 bg-surface p-4 md:p-5 rounded-2xl border ${i === 0 ? "border-primary/30" : "border-outline/30"}`}>
+                            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full shadow-md border-2 border-white flex-shrink-0" style={{ backgroundColor: shade.hex }} />
+                            <div className="text-left min-w-0">
+                              <p className="font-serif italic text-sm text-on-surface truncate">{shade.name}</p>
+                              <p className="font-sans text-[10px] text-on-surface-variant truncate">{shade.code} · {shade.undertone}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Recommendations */}
+                    <div className="space-y-6 md:space-y-8">
+                      <p className="font-sans font-bold text-[10px] text-on-surface-variant uppercase tracking-[0.4em] text-left">The Protocol</p>
+                      <div className="space-y-5 md:space-y-6">
+                        {result.recommendations.map((rec, i) => (
+                          <div key={i} className="flex gap-5 md:gap-8 group items-start">
+                            <span className="font-serif italic text-3xl md:text-5xl text-primary/10 group-hover:text-primary/30 transition-colors leading-none flex-shrink-0">0{i + 1}.</span>
+                            <div className="text-left pt-1">
+                              <p className="font-serif italic text-lg md:text-2xl text-on-surface mb-1 tracking-tight group-hover:text-primary transition-colors uppercase leading-none">{rec.productType}</p>
+                              <p className="font-serif italic text-sm text-on-surface-variant leading-relaxed opacity-80">{rec.reason}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Restart */}
+                    <div className="pt-8 md:pt-12 flex justify-center">
+                      <button onClick={resetAnalysis} className="flex items-center gap-4 text-[11px] font-sans font-bold uppercase tracking-[0.4em] text-on-surface-variant hover:text-primary transition-all group">
+                        <RefreshCw size={14} className="group-hover:rotate-180 transition-transform duration-700" />
+                        Restart Diagnosis
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Texture Overlay */}
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0qCCigCzBl2r_arMXqxXfGunRFgOkyU00KTHMbK008ifO9eeLOzlDVUFZZJYBVa64gzdqA8cU-APReWjhTECos0TCHF6HtkrlrAwpIFyYUHxo_gPKu-0ArFilWq4_1hk-4ssuL3SHDOQ5dZPO0umZ5YwlRBzcDIk-h-hvWR1QZkKCGpFrhFVIpBbferBVAKxTRMHyyneoHjpwiRfBDfKPPNoS4keleX2vu8eke0eLDtgK0KXMe-QD0OrkJMyKM1c3nMYJoisw-3Fv"
+              alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-10 pointer-events-none" />
+          </div>
+
+          {error && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className="bg-red-50 p-4 rounded-2xl flex items-center gap-3 text-red-800 font-serif text-sm border border-red-200">
+              <Info size={16} className="flex-shrink-0" /> <span>{error}</span>
+            </motion.div>
+          )}
+
+          {!result && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+              {[
+                { icon: <Eye size={16} />, title: "Face Detection", subtitle: "Haar cascade locates your face precisely" },
+                { icon: <Palette size={16} />, title: "HSV Segmentation", subtitle: "Isolates true skin tone from cheeks & forehead" },
+                { icon: <Target size={16} />, title: "K-Means Matching", subtitle: "Clusters dominant color, matches to shade DB" },
+              ].map((feature, i) => (
+                <div key={i} className="p-5 md:p-6 bg-surface rounded-2xl border border-outline/30 text-center">
+                  <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary/5 flex items-center justify-center mx-auto mb-3 md:mb-4 text-primary">{feature.icon}</div>
+                  <p className="font-sans font-bold text-[10px] text-primary uppercase tracking-[0.3em] mb-2">{feature.title}</p>
+                  <p className="font-serif text-[12px] md:text-[13px] text-on-surface-variant italic leading-relaxed">{feature.subtitle}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Side Info Panel — hidden on mobile when result is shown */}
+        <div className={`lg:col-span-4 space-y-6 md:space-y-8 ${result ? "hidden lg:block" : "block"}`}>
+          <div className="bg-surface-container-low p-6 md:p-8 border border-surface-container-high rounded-sm">
+            <h2 className="font-serif text-xl md:text-2xl text-on-surface mb-6 md:mb-10 flex items-center gap-3 uppercase tracking-tighter">The Protocol</h2>
+            <div className="space-y-7 md:space-y-10">
+              <div className="flex gap-4 md:gap-5">
+                <Sun className="text-primary mt-1 flex-shrink-0" size={18} strokeWidth={1.5} />
+                <div>
+                  <p className="font-sans font-bold text-[11px] md:text-[12px] text-on-surface uppercase tracking-widest mb-2">Natural Light</p>
+                  <p className="font-serif italic text-[13px] md:text-[14px] text-on-surface-variant leading-relaxed">Soft daylight ensures the most accurate capture of your natural pigmentation.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 md:gap-5">
+                <Sparkles className="text-primary mt-1 flex-shrink-0" size={18} strokeWidth={1.5} />
+                <div>
+                  <p className="font-sans font-bold text-[11px] md:text-[12px] text-on-surface uppercase tracking-widest mb-2">Purity</p>
+                  <p className="font-serif italic text-[13px] md:text-[14px] text-on-surface-variant leading-relaxed">A bare face reveals the underlying canvas for better treatment recommendations.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 md:gap-5">
+                <CheckCircle2 className="text-primary mt-1 flex-shrink-0" size={18} strokeWidth={1.5} />
+                <div>
+                  <p className="font-sans font-bold text-[11px] md:text-[12px] text-on-surface uppercase tracking-widest mb-2">Confidence</p>
+                  <p className="font-serif italic text-[13px] md:text-[14px] text-on-surface-variant leading-relaxed">OpenCV face detection with K-means skin tone clustering for precise shade matching.</p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-8 md:mt-12 p-5 md:p-6 bg-surface-container-lowest border border-outline-variant/30 italic font-serif text-[14px] md:text-[15px] text-on-surface-variant leading-relaxed">
+              "True beauty radiance comes from understanding your unique biological signature."
+            </div>
+          </div>
+
+          <div className="aspect-[3/4] relative overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 group">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaYUxSZuLWF-QFXV7hQOeRISGkN2sMAOwfSr_s19m2AEumdR_yeCmyMmO1gS3fMouurKx7EZpXVsHNe3XexF0D_vNi2EC9uXgC5NzdX1IieZ9h2nbawfIkNASQT_eAyjGblcJz6cPkUFw90idsXOkEDnNFKHVal-9oVHwFWH2BhtnsTen5L-5Cq3f_tkyUbLNhngQsfJRSb5oPnAy-WEHjvOdXRawtxc2K5T91MrY6Ip2RTbpagtCjuhh5JyNuNosjpuPH6I49WdCy"
+              alt="Portrait" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+            <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/60 to-transparent">
+              <p className="text-white font-sans font-bold text-[10px] uppercase tracking-[0.4em]">Scan Reference</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <canvas ref={canvasRef} className="hidden" />
+    </motion.div>
+  );
+}
       {/* Hero Header */}
       <div className="text-center mb-16 px-4">
         <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-sans font-bold text-[10px] text-primary uppercase mb-4 tracking-[0.4em]">
