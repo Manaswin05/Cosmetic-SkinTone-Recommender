@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 
 import cv2
 import numpy as np
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from PIL import Image
 from pymongo import MongoClient
@@ -22,7 +22,10 @@ from pymongo.errors import ConnectionFailure
 
 from shade_database import SHADE_DATABASE, PRODUCT_RECOMMENDATIONS
 
-app = Flask(__name__)
+# Serve built React frontend from ../dist
+DIST_DIR = os.path.join(os.path.dirname(__file__), "..", "dist")
+
+app = Flask(__name__, static_folder=DIST_DIR, static_url_path="/")
 CORS(app)
 
 # MongoDB setup
@@ -417,6 +420,16 @@ def health():
     """Health check endpoint."""
     mongo_status = "connected" if requests_collection is not None else "unavailable"
     return jsonify({"status": "ok", "service": "Lumina Skin Analyzer", "mongo": mongo_status})
+
+
+# ── Serve React frontend for all non-API routes ──────────────────────────────
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_frontend(path):
+    """Serve the built React app. Falls back to index.html for client-side routing."""
+    if path and os.path.exists(os.path.join(DIST_DIR, path)):
+        return send_from_directory(DIST_DIR, path)
+    return send_from_directory(DIST_DIR, "index.html")
 
 
 if __name__ == "__main__":

@@ -15,13 +15,16 @@ export default defineConfig(({mode}) => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    // Ensure the build output goes to /dist at the project root
+    build: {
+      outDir: 'dist',
+    },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
+      // In dev, proxy /api to the local Flask server
       proxy: {
         '/api': {
-          target: env.VITE_API_URL || 'http://localhost:5000',
+          target: 'http://localhost:5000',
           changeOrigin: true,
         },
       },

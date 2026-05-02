@@ -1,17 +1,17 @@
-"""Gunicorn configuration for production deployment"""
+"""Gunicorn configuration for Render deployment"""
 
 import multiprocessing
+import os
 
-# Server socket
-bind = "0.0.0.0:5000"
-backlog = 2048
+# Render injects $PORT — default to 5000 for local dev
+port = os.environ.get("PORT", "5000")
+bind = f"0.0.0.0:{port}"
 
-# Worker processes
-workers = multiprocessing.cpu_count() * 2 + 1
+# Workers
+workers = 2
 worker_class = "sync"
-worker_connections = 1000
-timeout = 30
-keepalive = 2
+timeout = 120
+keepalive = 5
 
 # Logging
 accesslog = "-"
