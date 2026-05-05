@@ -23,7 +23,9 @@ from pymongo.errors import ConnectionFailure
 from shade_database import SHADE_DATABASE, PRODUCT_RECOMMENDATIONS
 
 # Serve built React frontend from ../dist
-DIST_DIR = os.path.join(os.path.dirname(__file__), "..", "dist")
+DIST_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "dist"))
+print(f"[INFO] Serving frontend from: {DIST_DIR}")
+print(f"[INFO] dist exists: {os.path.exists(DIST_DIR)}")
 
 app = Flask(__name__, static_folder=DIST_DIR, static_url_path="/")
 CORS(app)
