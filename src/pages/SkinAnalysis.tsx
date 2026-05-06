@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+﻿import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Camera, Upload, Info, Sun, Sparkles, Target, UserCircle2, Loader2, RefreshCw, CheckCircle2, Palette, Eye } from "lucide-react";
 

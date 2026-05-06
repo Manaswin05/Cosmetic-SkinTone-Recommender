@@ -7,6 +7,8 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: NODE_VERSION
+        value: 20.11.0
       - key: MONGO_URI
         sync: false
     healthCheckPath: /api/health
