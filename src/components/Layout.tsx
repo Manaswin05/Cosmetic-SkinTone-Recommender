@@ -1,6 +1,6 @@
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Heart, User, ShoppingBag, ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
+import { Heart, User, ShoppingBag } from "lucide-react";
 
 const NAV_LINKS = [
   { name: "Shop", href: "/shop" },
@@ -17,8 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Navigation */}
       <header className="bg-surface-bright/95 backdrop-blur-md border-b border-surface-container-high sticky top-0 z-50">
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 h-24 flex justify-between items-center">
-          <Link to="/" className="text-3xl font-serif italic text-primary tracking-tight">
-            lumina.
+          <Link to="/" className="flex flex-col items-start">
+            <div className="text-xs font-sans font-bold uppercase tracking-[0.3em] text-primary/70">Google AI Studio</div>
+            <div className="text-3xl font-serif italic text-primary tracking-tight">lumina.</div>
           </Link>
 
           <nav className="hidden md:flex items-center gap-10">
@@ -60,7 +61,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-[1280px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
             <div>
-              <div className="font-serif italic text-2xl text-primary mb-8 tracking-tight">lumina.</div>
+              <div className="font-serif italic text-2xl text-primary mb-2 tracking-tight">lumina.</div>
+              <div className="text-xs font-sans font-bold uppercase tracking-[0.3em] text-primary/70 mb-6">Powered by Google AI Studio</div>
               <div className="flex flex-wrap gap-x-8 gap-y-4">
                 {["Privacy Policy", "Terms of Service", "Shipping & Returns", "Accessibility", "Contact Us"].map((item) => (
                   <a
@@ -89,7 +91,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
               <p className="font-sans font-bold text-[9px] text-[#8C8A76]/60 uppercase tracking-[0.3em]">
-                © 2024 LUMINA BEAUTY. ETHICALLY SOURCED.
+                © 2024 LUMINA BEAUTY × GOOGLE AI STUDIO. ETHICALLY SOURCED.
               </p>
             </div>
           </div>

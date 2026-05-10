@@ -1,13 +1,28 @@
+# ── Dependencies ──────────────────────────────
 node_modules/
+
+# ── Build outputs ─────────────────────────────
 build/
 dist/
 coverage/
-.DS_Store
-*.log
-.env*
+
+# ── Environment / Secrets ─────────────────────
+# Block ALL .env variants (contains real credentials)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+# Allow only the template (no real values)
 !.env.example
 
-# Python
+# ── OS files ──────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+
+# ── Python ────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -16,7 +31,12 @@ __pycache__/
 venv/
 env/
 ENV/
+*.egg-info/
+dist/
+.pytest_cache/
 
-# IDE
+# ── IDE ───────────────────────────────────────
 .vscode/
 .idea/
+*.swp
+*.swo
