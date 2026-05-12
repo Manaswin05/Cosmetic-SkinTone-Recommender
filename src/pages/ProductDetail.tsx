@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
-import { Star, Camera, Plus, ChevronRight, ShoppingBag } from "lucide-react";
+import { Star, Camera, Plus, ChevronRight, ShoppingBag, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const SHADES = [
   { name: "Light 01", color: "#F5E1D0" },
@@ -16,22 +17,30 @@ const SHADES = [
 const RECOMMENDED = [
   {
     name: "Radiance Primer",
-    price: "$42.00",
+    price: "₹3,360",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBia4VLgixQ0vbOvV89z1nBlxsMrXWr5HkgsG-He4WddikPivu2UVhJOgNwhqhTr6ivaZY1_93kT_toQvyPYsD64r1Zvv3D_aU8IHxP5N8T-zpJWCxonX2GywBhp8aSauZYDqzYK0yzxzgHvQoB7dul9zn_RTKcZWBSWMSz-RuTQN-9FDw_nc-dtVCEfxdY4sMhWwfCtAQl4OFLuAvpUQ1Y0chOGyDKGABaJCtrEb2DG4A8hOPGd8nxcrRIxucVec9eryIrYy7V1scV",
   },
   {
     name: "Seamless Blender Brush",
-    price: "$34.00",
+    price: "₹2,720",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBfmmiwgtCiQ2Us4iqTEfKYt2xaCAIGSl-Hv8qJySSJ0OjNbB2gV5RxaJs5Hbu_ZUwtuHLbZAhIUGiptZtV6jd4XnjVENBluvqdsoVZm_uO4bCyG1PyP0FuDlEK37fZTgaG1vbq3YijtpS7niZGxJDDPim7hS_HKfQIEHZBgJgM67gTpnkx3hneBS2ftveZ7YCqFizAf_Tf5TsorNRn8WjznnLRYo-yOzKh7IhMKDq196VmjCZvUPVY9bsB-JGvUhZa5KGW1aLGH90W",
   },
   {
     name: "Dewy Setting Mist",
-    price: "$28.00",
+    price: "₹2,240",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFaxhuOkuQZxnRw9HEdxs7g7zuAlXPGVh3U3L7ngoQFtiokmIw0JaXYYnhVCtE3scJllafzWLS2G2FsQYUsfrAYZLOwPXPRew3G_Qf10WWdXHQn1P8KNlfU6XTAq91zT8AW15JfCUtOAWTYr1AUary9OinFTZm27UxyzXOP7XNeJ4SrXQGfu4rCPmVEsxrqU7wBsuJgDYiJ9GmrUkltJAwTS-5d742QLN1o3DpP28fa3zblubTRhvx8PlCjmBQw_RCZzKuc1JbP92e",
   },
 ];
 
 export default function ProductDetail() {
+  const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+
+  const handleAddToCart = () => {
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+  };
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -85,7 +94,7 @@ export default function ProductDetail() {
                 (128 Rituals)
               </span>
             </div>
-            <p className="font-serif italic text-4xl text-primary tracking-tighter">$68.00</p>
+            <p className="font-serif italic text-4xl text-primary tracking-tighter">₹5,440</p>
           </div>
 
           <p className="font-serif italic text-xl text-on-surface-variant leading-relaxed text-left opacity-80">
@@ -117,27 +126,68 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <Link 
-              to="/analysis" 
-              className="flex items-center justify-center gap-6 w-full py-6 rounded-[24px] bg-white border border-outline text-on-surface font-sans font-bold text-[10px] uppercase tracking-[0.4em] hover:bg-surface transition-all duration-300 shadow-sm"
-            >
-              <Camera size={18} strokeWidth={1.5} />
-              Protocol Analysis
-            </Link>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4 bg-surface rounded-2xl p-4 border border-outline/30">
+                <button 
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="p-2 hover:bg-surface-container rounded-lg transition-colors text-on-surface-variant hover:text-primary"
+                >
+                  <Minus size={16} />
+                </button>
+                <span className="flex-1 text-center font-sans font-bold text-[14px]">{quantity}</span>
+                <button 
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="p-2 hover:bg-surface-container rounded-lg transition-colors text-on-surface-variant hover:text-primary"
+                >
+                  <Plus size={16} />
+                </button>
+              </div>
 
-            <button className="w-full py-7 rounded-[24px] bg-primary text-white font-sans font-bold text-[11px] uppercase tracking-[0.4em] hover:opacity-90 transition-all flex items-center justify-center gap-4 shadow-2xl shadow-primary/20">
-              <ShoppingBag size={18} strokeWidth={1.5} />
-              Add to Collection
-            </button>
+              <Link 
+                to="/analysis" 
+                className="flex items-center justify-center gap-6 w-full py-6 rounded-[24px] bg-white border border-outline text-on-surface font-sans font-bold text-[10px] uppercase tracking-[0.4em] hover:bg-surface transition-all duration-300 shadow-sm"
+              >
+                <Camera size={18} strokeWidth={1.5} />
+                Protocol Analysis
+              </Link>
+
+              <motion.button 
+                onClick={handleAddToCart}
+                className="w-full py-7 rounded-[24px] bg-primary text-white font-sans font-bold text-[11px] uppercase tracking-[0.4em] hover:opacity-90 transition-all flex items-center justify-center gap-4 shadow-2xl shadow-primary/20"
+              >
+                <ShoppingBag size={18} strokeWidth={1.5} />
+                Add {quantity} to Collection
+              </motion.button>
+
+              {addedToCart && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="bg-secondary/10 border border-secondary text-secondary px-4 py-3 rounded-xl font-sans font-bold text-[10px] uppercase tracking-[0.2em] text-center"
+                >
+                  ✓ Added to Collection
+                </motion.div>
+              )}
+            </div>
           </div>
 
           <div className="border-t border-outline/30 mt-6 divide-y divide-outline/20">
             {["Biology", "Application Protocol", "Sourcing"].map((item) => (
-              <button key={item} className="flex justify-between items-center w-full py-8 group text-left">
+              <button 
+                key={item}
+                onClick={() => setExpandedSection(expandedSection === item ? null : item)}
+                className="flex justify-between items-center w-full py-8 group text-left"
+              >
                 <span className="font-sans font-bold text-[10px] uppercase tracking-[0.3em] text-on-surface-variant group-hover:text-primary transition-colors">
                   {item}
                 </span>
-                <Plus size={16} className="text-on-surface-variant/30 group-hover:text-primary transition-all group-hover:rotate-90" />
+                <motion.div
+                  animate={{ rotate: expandedSection === item ? 45 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Plus size={16} className="text-on-surface-variant/30 group-hover:text-primary transition-all" />
+                </motion.div>
               </button>
             ))}
           </div>

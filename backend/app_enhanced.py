@@ -21,14 +21,16 @@ from pymongo.errors import ConnectionFailure
 from shade_database import SHADE_DATABASE, PRODUCT_RECOMMENDATIONS
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 CORS(app)
 
 # MongoDB setup
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017")
+DATABASE_NAME = os.environ.get("DATABASE_NAME", "lumina_beauty")
 try:
     mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
     mongo_client.admin.command("ping")
-    db = mongo_client["lumina_beauty"]
+    db = mongo_client[DATABASE_NAME]
     requests_collection = db["analysis_requests"]
     print("[OK] Connected to MongoDB")
 except ConnectionFailure:
@@ -441,20 +443,72 @@ def analyze_skin():
             ],
         }
 
-        # Log to MongoDB
+        # Log to MongoDB with enhanced training data
         if requests_collection is not None:
             try:
+                import uuid
                 log_entry = {
                     "timestamp": datetime.now(timezone.utc),
-                    "detectedColor": {"rgb": dominant_rgb, "hex": dominant_hex},
-                    "undertone": undertone,
-                    "shadeMatch": {
-                        "code": best_match["code"],
-                        "name": best_match["name"],
-                        "category": best_match["category"],
+                    "sessionId": str(uuid.uuid4()),
+                    
+                    "detectedSkinData": {
+                        "dominantColor": {
+                            "rgb": list(dominant_rgb),
+                            "hex": dominant_hex,
+                        },
+                        "skinTone": best_match["category"],
+                        "undertone": undertone,
+                        "undertoneConfidence": round(undertone_confidence, 1),
                     },
-                    "confidence": round(overall_confidence, 1),
-                    "userAgent": request.headers.get("User-Agent", "unknown"),
+                    
+                    "analysisMetrics": {
+                        "faceDetected": {
+                            "x": int(x),
+                            "y": int(y),
+                            "width": int(w),
+                            "height": int(h),
+                        },
+                        "pixelsAnalyzed": len(skin_pixels),
+                        "pixelsFiltered": len(filtered_pixels),
+                        "clusterConfidence": round(cluster_confidence, 1),
+                        "colorDistance": shade_result["colorDistance"],
+                    },
+                    
+                    "matchResult": {
+                        "shadeCode": best_match["code"],
+                        "shadeName": best_match["name"],
+                        "category": best_match["category"],
+                        "hex": best_match["hex"],
+                        "undertone": best_match["undertone"],
+                        "matchConfidence": round(overall_confidence, 1),
+                        "nearbyMatches": [
+                            {
+                                "shadeCode": nearby["code"],
+                                "shadeName": nearby["name"],
+                                "distance": nearby["distance"],
+                            }
+                            for nearby in shade_result["nearbyShades"]
+                        ],
+                    },
+                    
+                    "recommendations": [
+                        {
+                            "productType": rec["productType"],
+                            "reason": rec["reason"],
+                            "category": category,
+                        }
+                        for rec in recommendations
+                    ],
+                    
+                    "userContext": {
+                        "userAgent": request.headers.get("User-Agent", "unknown"),
+                    },
+                    
+                    "feedbackData": {
+                        "userConfirmed": None,
+                        "userFeedback": None,
+                        "actualShadeUsed": None,
+                    },
                 }
                 requests_collection.insert_one(log_entry)
             except Exception as log_err:
@@ -473,7 +527,7 @@ def health():
     mongo_status = "connected" if requests_collection is not None else "unavailable"
     return jsonify({
         "status": "ok",
-        "service": "Lumina Skin Analyzer (Enhanced)",
+        "service": "Lumina Beauty - Google AI Studio Skin Analyzer (Enhanced)",
         "mongo": mongo_status,
         "opencv_version": cv2.__version__
     })

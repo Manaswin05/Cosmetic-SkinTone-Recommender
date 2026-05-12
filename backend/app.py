@@ -28,14 +28,16 @@ print(f"[INFO] Serving frontend from: {DIST_DIR}")
 print(f"[INFO] dist exists: {os.path.exists(DIST_DIR)}")
 
 app = Flask(__name__, static_folder=DIST_DIR, static_url_path="/")
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 CORS(app)
 
 # MongoDB setup
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017")
+DATABASE_NAME = os.environ.get("DATABASE_NAME", "lumina_beauty")
 try:
     mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
     mongo_client.admin.command("ping")
-    db = mongo_client["lumina_beauty"]
+    db = mongo_client[DATABASE_NAME]
     requests_collection = db["analysis_requests"]
     print("[OK] Connected to MongoDB")
 except ConnectionFailure:
@@ -370,20 +372,72 @@ def analyze_skin():
             ],
         }
 
-        # Log request to MongoDB
+        # Log request to MongoDB with enhanced training data
         if requests_collection is not None:
             try:
+                import uuid
                 log_entry = {
                     "timestamp": datetime.now(timezone.utc),
-                    "detectedColor": {"rgb": dominant_rgb, "hex": dominant_hex},
-                    "undertone": undertone,
-                    "shadeMatch": {
-                        "code": best_match["code"],
-                        "name": best_match["name"],
-                        "category": best_match["category"],
+                    "sessionId": str(uuid.uuid4()),
+                    
+                    "detectedSkinData": {
+                        "dominantColor": {
+                            "rgb": list(dominant_rgb),
+                            "hex": dominant_hex,
+                        },
+                        "skinTone": best_match["category"],
+                        "undertone": undertone,
+                        "undertoneConfidence": round(100.0, 1),  # Placeholder for undertone confidence
                     },
-                    "confidence": shade_result["confidence"],
-                    "userAgent": request.headers.get("User-Agent", "unknown"),
+                    
+                    "analysisMetrics": {
+                        "faceDetected": {
+                            "x": int(x),
+                            "y": int(y),
+                            "width": int(w),
+                            "height": int(h),
+                        },
+                        "pixelsAnalyzed": len(skin_pixels),
+                        "pixelsFiltered": len(filtered_pixels),
+                        "clusterConfidence": 0.0,  # Placeholder
+                        "colorDistance": shade_result["confidence"],
+                    },
+                    
+                    "matchResult": {
+                        "shadeCode": best_match["code"],
+                        "shadeName": best_match["name"],
+                        "category": best_match["category"],
+                        "hex": best_match["hex"],
+                        "undertone": best_match["undertone"],
+                        "matchConfidence": shade_result["confidence"],
+                        "nearbyMatches": [
+                            {
+                                "shadeCode": nearby["code"],
+                                "shadeName": nearby["name"],
+                                "distance": nearby["distance"],
+                            }
+                            for nearby in shade_result["nearbyShades"]
+                        ],
+                    },
+                    
+                    "recommendations": [
+                        {
+                            "productType": rec["productType"],
+                            "reason": rec["reason"],
+                            "category": category,
+                        }
+                        for rec in recommendations
+                    ],
+                    
+                    "userContext": {
+                        "userAgent": request.headers.get("User-Agent", "unknown"),
+                    },
+                    
+                    "feedbackData": {
+                        "userConfirmed": None,
+                        "userFeedback": None,
+                        "actualShadeUsed": None,
+                    },
                 }
                 requests_collection.insert_one(log_entry)
             except Exception as log_err:
@@ -421,7 +475,7 @@ def get_requests():
 def health():
     """Health check endpoint."""
     mongo_status = "connected" if requests_collection is not None else "unavailable"
-    return jsonify({"status": "ok", "service": "Lumina Skin Analyzer", "mongo": mongo_status})
+    return jsonify({"status": "ok", "service": "Lumina Beauty - Google AI Studio Skin Analyzer", "mongo": mongo_status})
 
 
 # ── Serve React frontend for all non-API routes ──────────────────────────────

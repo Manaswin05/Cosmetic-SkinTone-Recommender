@@ -1,12 +1,16 @@
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
+##feature/google-ai-studio-enhancements
+
+# Lumina Beauty - Google AI Studio Skin Tone Analysis
+=======
 <div>
 Official Website Link : - https://cosmetic-skintone-recommender.onrender.com
 </div>
 # Lumina Beauty - AI Skin Tone Analysis
-
-Advanced skin tone detection using OpenCV computer vision. Upload a photo or use your camera to get personalized cosmetic shade recommendations.
+<br>
+Advanced skin tone detection using Stitch (Google AI Studio) for frontnend and OpenCV computer vision. Upload a photo or use your camera to get personalized cosmetic shade recommendations.
 
 ## 🎨 Features
 
