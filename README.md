@@ -3,7 +3,7 @@
 </div>
 
 # Lumina Beauty - AI Studio Skin Tone Analysis
-=======
+
 <div>
 Official Website Link : - https://cosmetic-skintone-recommender.onrender.com
 </div>
