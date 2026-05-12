@@ -1,9 +1,8 @@
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
-##feature/google-ai-studio-enhancements
 
-# Lumina Beauty - Google AI Studio Skin Tone Analysis
+# Lumina Beauty - AI Studio Skin Tone Analysis
 =======
 <div>
 Official Website Link : - https://cosmetic-skintone-recommender.onrender.com
