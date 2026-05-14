@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Camera, Upload, Info, Sun, Sparkles, Target, UserCircle2, Loader2, RefreshCw, CheckCircle2, Palette, Eye } from "lucide-react";
 
@@ -141,8 +141,8 @@ export default function SkinAnalysis() {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "user",
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
         },
       });
 
@@ -166,8 +166,12 @@ export default function SkinAnalysis() {
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext("2d");
       if (ctx) {
+        // Mirror the captured image to match the mirrored live preview
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
         ctx.drawImage(video, 0, 0);
-        setCapturedImage(canvas.toDataURL("image/jpeg"));
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
+        setCapturedImage(canvas.toDataURL("image/jpeg", 0.95));
         stopCamera();
       }
     }
@@ -292,7 +296,7 @@ export default function SkinAnalysis() {
                     autoPlay
                     playsInline
                     muted
-                    style={{ backgroundColor: '#1a1a1a' }}
+                    style={{ backgroundColor: '#1a1a1a', transform: 'scaleX(-1)' }}
                     className="w-full h-full object-cover"
                   />
                   
@@ -461,9 +465,7 @@ export default function SkinAnalysis() {
               )}
             </AnimatePresence>
 
-            {/* Texture Overlay */}
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0qCCigCzBl2r_arMXqxXfGunRFgOkyU00KTHMbK008ifO9eeLOzlDVUFZZJYBVa64gzdqA8cU-APReWjhTECos0TCHF6HtkrlrAwpIFyYUHxo_gPKu-0ArFilWq4_1hk-4ssuL3SHDOQ5dZPO0umZ5YwlRBzcDIk-h-hvWR1QZkKCGpFrhFVIpBbferBVAKxTRMHyyneoHjpwiRfBDfKPPNoS4keleX2vu8eke0eLDtgK0KXMe-QD0OrkJMyKM1c3nMYJoisw-3Fv"
-              alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-10 pointer-events-none" />
+
           </div>
 
           {error && (
