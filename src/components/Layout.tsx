@@ -29,9 +29,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className={`flex items-center gap-3 font-sans font-bold uppercase tracking-[0.2em] text-[11px] transition-all duration-300 hover:opacity-70 ${
-                    isActive ? "text-primary" : "text-on-surface-variant"
-                  }`}
+                  className={`flex items-center gap-3 font-sans font-bold uppercase tracking-[0.2em] text-[11px] transition-all duration-300 hover:opacity-70 ${isActive ? "text-primary" : "text-on-surface-variant"
+                    }`}
                 >
                   <div className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-primary" : "border border-on-surface-variant"}`} />
                   {link.name}
@@ -91,7 +90,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
               <p className="font-sans font-bold text-[9px] text-[#8C8A76]/60 uppercase tracking-[0.3em]">
-                © 2024 LUMINA BEAUTY. ETHICALLY SOURCED.
+                © 2026 LUMINA BEAUTY. ETHICALLY SOURCED.
               </p>
             </div>
           </div>
