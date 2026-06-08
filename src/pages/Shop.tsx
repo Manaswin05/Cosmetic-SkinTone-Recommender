@@ -88,7 +88,7 @@ export default function Shop() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="max-w-[1280px] mx-auto px-6 md:px-12 py-12"
+      className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12"
     >
       {/* Cart Notification */}
       {showCartNotif && (
@@ -103,16 +103,16 @@ export default function Shop() {
       )}
 
       {/* Search Result Banner */}
-      <section className="mb-16 bg-primary rounded-[40px] p-10 flex flex-col md:flex-row justify-between items-center text-white shadow-2xl shadow-primary/20 relative overflow-hidden">
-        <div className="z-10 flex items-center gap-8">
-          <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20">
-            <Sparkles size={28} strokeWidth={1.5} />
+      <section className="mb-8 sm:mb-12 md:mb-16 bg-primary rounded-[20px] sm:rounded-[30px] md:rounded-[40px] p-5 sm:p-7 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-center text-white shadow-2xl shadow-primary/20 relative overflow-hidden gap-4">
+        <div className="z-10 flex items-center gap-4 sm:gap-6 md:gap-8">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20 shrink-0">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" strokeWidth={1.5} />
           </div>
           <div>
-            <h2 className="font-sans font-bold text-[10px] uppercase opacity-70 tracking-[0.4em] mb-2 text-left">
+            <h2 className="font-sans font-bold text-[9px] sm:text-[10px] uppercase opacity-70 tracking-[0.3em] sm:tracking-[0.4em] mb-1 sm:mb-2 text-left">
               Current Signature
             </h2>
-            <p className="font-serif italic text-4xl text-white tracking-tighter">
+            <p className="font-serif italic text-xl sm:text-2xl md:text-4xl text-white tracking-tighter">
               Sand Medium <span className="opacity-50">—</span> <span className="italic font-normal">Optimal</span>
             </p>
           </div>
@@ -133,10 +133,10 @@ export default function Shop() {
         <div className="absolute bottom-[-10%] left-[-5%] w-48 h-48 bg-primary-container/20 rounded-full blur-[60px]" />
       </section>
 
-      <div className="flex flex-col md:flex-row gap-16">
+      <div className="flex flex-col md:flex-row gap-8 sm:gap-12 md:gap-16">
         {/* Sidebar Filters */}
-        <aside className="w-full md:w-72 flex-shrink-0 space-y-16">
-          <div className="bg-surface p-10 rounded-[40px] border border-outline/50">
+        <aside className="w-full md:w-72 flex-shrink-0 space-y-8 sm:space-y-12 md:space-y-16">
+          <div className="bg-surface p-6 sm:p-8 md:p-10 rounded-[20px] sm:rounded-[30px] md:rounded-[40px] border border-outline/50">
             <div className="mb-12">
               <h3 className="font-sans font-bold text-[10px] uppercase tracking-[0.4em] text-primary mb-8">
                 The Origins
@@ -209,10 +209,10 @@ export default function Shop() {
 
         {/* Product Grid */}
         <section className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-6 lg:gap-x-10 gap-y-10 sm:gap-y-14 lg:gap-y-20">
             {filteredProducts.map((product) => (
               <Link key={product.id} to={`/product/${product.id}`} className="group relative flex flex-col">
-                <div className="aspect-[3/4] rounded-[48px] overflow-hidden bg-surface mb-8 relative border border-outline/30 shadow-sm transition-all duration-700 hover:shadow-2xl hover:shadow-primary/5">
+                <div className="aspect-[3/4] rounded-[20px] sm:rounded-[32px] md:rounded-[48px] overflow-hidden bg-surface mb-4 sm:mb-6 md:mb-8 relative border border-outline/30 shadow-sm transition-all duration-700 hover:shadow-2xl hover:shadow-primary/5">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -239,15 +239,15 @@ export default function Shop() {
                     </div>
                   </div>
                 </div>
-                <div className="px-5">
-                  <p className="font-serif italic text-[14px] text-on-surface-variant mb-1 opacity-60">
+                <div className="px-1 sm:px-3 md:px-5">
+                  <p className="font-serif italic text-[11px] sm:text-[13px] md:text-[14px] text-on-surface-variant mb-0.5 sm:mb-1 opacity-60">
                     {product.brand}
                   </p>
-                  <h4 className="font-serif italic text-2xl text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">
+                  <h4 className="font-serif italic text-base sm:text-lg md:text-2xl text-on-surface mb-1.5 sm:mb-2 md:mb-3 group-hover:text-primary transition-colors leading-tight">
                     {product.name}
                   </h4>
                   <div className="flex justify-between items-center">
-                    <span className="font-sans font-bold text-[15px] text-primary tracking-tight">{product.price}</span>
+                    <span className="font-sans font-bold text-[12px] sm:text-[13px] md:text-[15px] text-primary tracking-tight">{product.price}</span>
                     <div className="flex items-center gap-1.5 text-secondary/30">
                       {[...Array(5)].map((_, i) => (
                         <Star

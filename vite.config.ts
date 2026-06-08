@@ -19,6 +19,8 @@ export default defineConfig(({mode}) => {
     build: {
       outDir: 'dist',
     },
+    // Ensure SPA routing works on page refresh
+    appType: 'spa',
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       // In dev, proxy /api to the local Flask server
