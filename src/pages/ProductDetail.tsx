@@ -82,10 +82,10 @@ export default function ProductDetail() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="max-w-[1280px] mx-auto px-6 md:px-12 py-16"
+      className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16"
     >
       {/* Breadcrumb */}
-      <nav className="mb-12 flex items-center gap-3 font-sans font-bold text-[10px] text-outline uppercase tracking-[0.2em]">
+      <nav className="mb-6 sm:mb-8 md:mb-12 flex items-center gap-2 sm:gap-3 font-sans font-bold text-[9px] sm:text-[10px] text-outline uppercase tracking-[0.2em]">
         <Link to="/shop" className="hover:text-on-surface transition-colors">Shop</Link>
         <ChevronRight size={12} strokeWidth={3} className="text-outline-variant" />
         <Link to="/shop" className="hover:text-on-surface transition-colors">Face</Link>
@@ -93,11 +93,11 @@ export default function ProductDetail() {
         <span className="text-on-surface">Silk Veil Foundation</span>
       </nav>
 
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 md:gap-16">
         {/* Left: Gallery */}
         <div className="lg:col-span-7 flex flex-col gap-6">
           {/* Main image with shade overlay */}
-          <div className="aspect-[4/5] bg-surface rounded-[60px] overflow-hidden group relative shadow-2xl border border-outline/30">
+          <div className="aspect-[4/5] bg-surface rounded-[28px] sm:rounded-[40px] md:rounded-[60px] overflow-hidden group relative shadow-2xl border border-outline/30">
             <img
               src={GALLERY_IMAGES[activeImage]}
               alt="Silk Veil Foundation"
@@ -122,7 +122,7 @@ export default function ProductDetail() {
               className="absolute bottom-0 left-0 right-0 h-1.5 origin-left"
               style={{ backgroundColor: shade.color }}
             />
-            <div className="absolute top-8 left-8 bg-primary text-white border border-white/20 px-6 py-2.5 rounded-full font-sans font-bold text-[10px] uppercase tracking-[0.3em] shadow-2xl">
+            <div className="absolute top-4 sm:top-6 md:top-8 left-4 sm:left-6 md:left-8 bg-primary text-white border border-white/20 px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full font-sans font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] shadow-2xl">
               Bestseller
             </div>
             {/* Current shade badge */}
@@ -131,7 +131,7 @@ export default function ProductDetail() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="absolute bottom-8 left-8 flex items-center gap-3 bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-outline/20"
+              className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 flex items-center gap-2 sm:gap-3 bg-white/90 backdrop-blur-md px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 rounded-xl sm:rounded-2xl shadow-lg border border-outline/20"
             >
               <div className="w-5 h-5 rounded-full border border-black/10 shadow-inner" style={{ backgroundColor: shade.color }} />
               <span className="font-sans font-bold text-[10px] uppercase tracking-[0.2em] text-on-surface">{shade.name}</span>
@@ -139,12 +139,12 @@ export default function ProductDetail() {
           </div>
 
           {/* Thumbnails */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             {GALLERY_IMAGES.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveImage(i)}
-                className={`aspect-square rounded-[20px] overflow-hidden cursor-pointer transition-all duration-300 border relative ${
+                className={`aspect-square rounded-[10px] sm:rounded-[14px] md:rounded-[20px] overflow-hidden cursor-pointer transition-all duration-300 border relative ${
                   i === activeImage
                     ? "ring-2 ring-primary ring-offset-2 scale-[1.03] shadow-lg border-primary/40"
                     : "border-outline/30 opacity-60 hover:opacity-100 hover:shadow-md"
@@ -176,7 +176,7 @@ export default function ProductDetail() {
             <span className="font-sans font-bold text-[10px] text-primary uppercase tracking-[0.4em] mb-4 block">
               The Signature
             </span>
-            <h1 className="font-serif italic text-6xl text-on-surface mb-4 leading-[0.9] tracking-tighter uppercase">
+            <h1 className="font-serif italic text-3xl sm:text-4xl md:text-6xl text-on-surface mb-3 sm:mb-4 leading-[0.9] tracking-tighter uppercase">
               Silk Veil.
             </h1>
             <div className="flex items-center gap-6 mb-5">
@@ -189,10 +189,10 @@ export default function ProductDetail() {
                 (128 Rituals)
               </span>
             </div>
-            <p className="font-serif italic text-4xl text-primary tracking-tighter">₹5,440</p>
+            <p className="font-serif italic text-2xl sm:text-3xl md:text-4xl text-primary tracking-tighter">₹5,440</p>
           </div>
 
-          <p className="font-serif italic text-xl text-on-surface-variant leading-relaxed opacity-80">
+          <p className="font-serif italic text-base sm:text-lg md:text-xl text-on-surface-variant leading-relaxed opacity-80">
             A weightless, breathable formula that melts into the skin for a second-skin finish, celebrated for its biological harmony.
           </p>
 
@@ -355,25 +355,25 @@ export default function ProductDetail() {
       </section>
 
       {/* Recommended Section */}
-      <section className="mt-40 py-24 px-12 bg-surface-bright rounded-[80px] border border-outline/30 shadow-2xl relative overflow-hidden">
+      <section className="mt-16 sm:mt-24 md:mt-40 py-12 sm:py-16 md:py-24 px-5 sm:px-8 md:px-12 bg-surface-bright rounded-[28px] sm:rounded-[48px] md:rounded-[80px] border border-outline/30 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-primary/5 pointer-events-none" />
-        <div className="max-w-[800px] mx-auto text-center mb-20 relative z-10">
-          <span className="font-sans font-bold text-[10px] text-primary uppercase tracking-[0.5em] mb-10 block">
+        <div className="max-w-[800px] mx-auto text-center mb-10 sm:mb-14 md:mb-20 relative z-10">
+          <span className="font-sans font-bold text-[10px] text-primary uppercase tracking-[0.4em] sm:tracking-[0.5em] mb-6 sm:mb-8 md:mb-10 block">
             The Symbiosis
           </span>
-          <h2 className="font-serif italic text-6xl text-on-surface mb-8 tracking-tighter leading-none">
+          <h2 className="font-serif italic text-3xl sm:text-4xl md:text-6xl text-on-surface mb-4 sm:mb-6 md:mb-8 tracking-tighter leading-none">
             Mapping your Routine.
           </h2>
-          <p className="font-serif italic text-xl text-on-surface-variant leading-relaxed">
+          <p className="font-serif italic text-base sm:text-lg md:text-xl text-on-surface-variant leading-relaxed">
             Based on your biological analysis, we've identified{" "}
             <strong className="text-primary italic">Neutral Tones</strong> as your baseline. These curations maintain
             your skin's natural homeostasis.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 md:gap-12 relative z-10">
           {RECOMMENDED.map((item) => (
             <div key={item.name} className="group cursor-pointer">
-              <div className="aspect-[3/4] rounded-[40px] bg-surface mb-10 overflow-hidden relative shadow-lg border border-white/40">
+              <div className="aspect-[3/4] rounded-[16px] sm:rounded-[28px] md:rounded-[40px] bg-surface mb-4 sm:mb-6 md:mb-10 overflow-hidden relative shadow-lg border border-white/40">
                 <img
                   src={item.image}
                   alt={item.name}
@@ -385,10 +385,10 @@ export default function ProductDetail() {
                   </div>
                 </div>
               </div>
-              <h3 className="font-serif italic text-2xl text-on-surface mb-3 group-hover:text-primary transition-colors uppercase leading-none">
+              <h3 className="font-serif italic text-base sm:text-lg md:text-2xl text-on-surface mb-1.5 sm:mb-2 md:mb-3 group-hover:text-primary transition-colors uppercase leading-none">
                 {item.name}
               </h3>
-              <p className="text-primary font-sans font-bold text-[13px] tracking-tight">{item.price}</p>
+              <p className="text-primary font-sans font-bold text-[11px] sm:text-[12px] md:text-[13px] tracking-tight">{item.price}</p>
             </div>
           ))}
         </div>
