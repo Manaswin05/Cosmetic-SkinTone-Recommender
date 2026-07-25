@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { motion } from "motion/react";
-import { Download, ArrowLeft, Sparkles, RefreshCw } from "lucide-react";
+import { Download, ArrowLeft, Sparkles } from "lucide-react";
 
 interface ShadeInfo {
   code: string;
