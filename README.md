@@ -232,7 +232,9 @@ Lumina-Beauty/
 │   │   ├── Home.tsx            # Landing page
 │   │   ├── SkinAnalysis.tsx    # Camera + upload analysis
 │   │   ├── Shop.tsx            # Product catalog
-│   │   └── ProductDetail.tsx   # Individual product view
+│   │   ├── ProductDetail.tsx   # Individual product view
+│   │   ├── OurStory.tsx        # Brand vision & founder story
+│   │   └── Journal.tsx         # Educational content & editorial features
 │   ├── utils/
 │   │   └── colorAnalysis.ts    # Client-side color utilities
 │   ├── App.tsx                 # Router configuration
