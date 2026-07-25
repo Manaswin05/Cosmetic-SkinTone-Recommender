@@ -209,7 +209,7 @@ function getHairstyleRecommendations(category: string, undertone: string): Hairs
 
 // ─── Makeup Recommendations ──────────────────────────────────────────
 
-function getMakeupAreas(season: Season, undertone: string): MakeupRec[] {
+function getMakeupAreas(season: Season, _undertone: string): MakeupRec[] {
   const palettes: Record<Season, MakeupRec[]> = {
     Spring: [
       { area: "Brows", shade: "Soft Taupe", description: "Natural arch with warm taupe fill", hex: "#A0877C" },
