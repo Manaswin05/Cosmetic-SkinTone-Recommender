@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "dev:backend": "cd backend && python app_enhanced.py",
-    "dev:backend:original": "cd backend && python app.py",
+    "dev:backend": "cd backend && python app.py",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:backend\" --names \"frontend,backend\" --prefix-colors \"cyan,magenta\"",
     "build": "vite build",
     "preview": "vite preview",
@@ -36,7 +35,7 @@
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   },
-  "description": "<div align=\"center\"> <img width=\"1200\" height=\"475\" alt=\"GHBanner\" src=\"https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6\" /> </div>",
+  "description": "AI-powered skin tone analyzer with personalized cosmetic shade recommendations",
   "main": "index.js",
   "keywords": [],
   "author": "",
