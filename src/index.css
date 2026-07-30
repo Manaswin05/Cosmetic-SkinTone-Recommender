@@ -38,3 +38,128 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ═════════════════════════════════════════════════════════════════
+   PROFESSIONAL BEAUTY REPORT STYLES (FACIAL AESTHETICS REFERENCE)
+   ═════════════════════════════════════════════════════════════════ */
+.pdf-container {
+  width: 794px; /* Standard A4 width at 96 DPI */
+  min-height: 1123px; /* Standard A4 height */
+  margin: 0 auto;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 40px 45px;
+  font-family: var(--font-sans);
+  box-sizing: border-box;
+}
+
+.pdf-header-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #111111;
+  margin: 0;
+}
+
+.pdf-header-subtitle {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #777777;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 6px;
+}
+
+.pdf-header-line {
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.pdf-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.pdf-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.pdf-card-gray {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.pdf-score-box {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  background: #fafafa;
+  margin-bottom: 20px;
+}
+
+.pdf-score-val {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1;
+}
+
+.pdf-score-denom {
+  font-size: 18px;
+  color: #666666;
+  font-weight: 400;
+}
+
+.pdf-metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.pdf-progress-track {
+  flex: 1;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  margin: 0 14px;
+  overflow: hidden;
+}
+
+.pdf-progress-fill {
+  height: 100%;
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+.pdf-list-item {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+.pdf-footer-bar {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
